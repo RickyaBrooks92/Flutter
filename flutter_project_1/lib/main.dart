@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:english_words/english_words.dart';
 
 void main() {
   runApp(MyApp());
@@ -73,7 +72,7 @@ class MyHomePage extends StatelessWidget {
               },
               child: Text('Get Weather'),
             ),
-          ], // ← 7
+          ],
         ),
       ),
     );

@@ -55,6 +55,8 @@
 
 <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 <string>This app needs access to location when open and in the background.</string>
+<key>NSLocationUsageDescription</key>
+<string> Older devies need location. </string>
 <key>NSLocationWhenInUseUsageDescription</key>
 <true/>
 </dict>
