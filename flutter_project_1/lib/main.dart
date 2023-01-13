@@ -1,8 +1,7 @@
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
+import 'package:geolocator/geolocator.dart';
 
 void main() {
   runApp(MyApp());
@@ -49,10 +48,20 @@ class MyHomePage extends StatelessWidget {
             Text('Press Button To Get Weather For My City'),
             ElevatedButton(
               onPressed: () async {
-                Dio dio = Dio();
-                var response = await dio.get(appState.url);
-                appState.weatherResult = response.data;
-                print(appState.weatherResult);
+                try {
+                  Position position = await Geolocator.getCurrentPosition(
+                      desiredAccuracy: LocationAccuracy.high);
+                  appState.url =
+                      'https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&units=imperial&appid=ae93a8df4eb012916dd53498f4b2cc0a';
+                  Dio dio = Dio();
+                  var response = await dio.get(appState.url);
+                  appState.weatherResult = response.data;
+                  print(appState.weatherResult);
+                  print(
+                      "Latitude: ${position.latitude} Longitude: ${position.longitude}");
+                } catch (e) {
+                  print(e);
+                }
               },
               child: Text('Next'),
             ),
@@ -61,4 +70,15 @@ class MyHomePage extends StatelessWidget {
       ),
     );
   }
+}
+
+class WeatherModel {
+  final String temp;
+  final String city;
+  final String description;
+
+  WeatherModel.fromMap(Map<String, dynamic> json)
+      : temp = json['main']['temp'].toString(),
+        city = json['name'],
+        description = json['weather'][0]['description'];
 }
